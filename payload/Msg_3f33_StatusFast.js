@@ -4,7 +4,7 @@
 
 	// Category    = Aggregated telemetry
 	// Object      = Fast
-	// MsgLength   = 80;
+	// MsgLength   = 80
 	// Description = Combined status Fast
 	// Version     = 3
 	// Frequency   = 2 seconds
