@@ -2,63 +2,109 @@
 { 
 	var Parser = require('binary-parser').Parser;
 
+	// Category    = Aggregated telemetry
+	// Object      = Fast
 	// MsgLength   = 80;
-	// Description = "Combined status Fast"
-	// Version     = 3;
+	// Description = Combined status Fast
+	// Version     = 3
 	// Frequency   = 2 seconds
-	this.parse_3F33 = function(msg) 
+	// Support     = Current
+	// Valid to    = SW 1.0.29
+	this.parse_3f33 = function(msg) 
 	{
 		var status = new Parser()
 		.skip(8)
-		.uint8('CmuPollerMode')
-		.uint8('CmuTxAckCount')
-		.uint8('CmuTxOpStatusNodeId')
-		.uint8('CmuTxOpStatusUSN')
-		.uint8('CmuTxOpParamNodeId')
+		.uint8('CmuPollerMode') 	    /* Choices
+				Idle = 0,
+				Normal = 1,
+				Collection Start = 2,
+				Collection Running = 3,
+				Sync Start = 4,
+				Sync Running = 5,
+				NetworkTest Start = 6,
+				NetworkTest Running = 9,
+				BypassTest Start = 7,
+				BypassTest Running = 8,
+				RebootAll Start = 10,
+				Rebooting AllDevices = 11,
+				Simulator Start = 12,
+				Simulator Running = 13, */
+		.uint8('CmuTxAckCount')            // Cellmon TX Acknowledgement Count
+		.uint8('CmuTxOpStatusNodeId')      // Cellmon TX Operating Status Node ID
+		.uint8('CmuTxOpStatusUSN')         // Cellmon TX Operating Status Universal Serial Number
+		.uint8('CmuTxOpParamNodeId')       // Cellmon TX Parameter Node ID
 		.int16le('GroupMinCellVolt',		{ formatter: (x) => {return x/1000;}})
 		.int16le('GroupMaxCellVolt',		{ formatter: (x) => {return x/1000;}})		
-		.uint8('GroupMinCellTemp',		{ formatter: (x) => {return x-40;}})
-		.uint8('GroupMaxCellTemp',		{ formatter: (x) => {return x-40;}})
+		.uint8('GroupMinCellTemp',			{ formatter: (x) => {return x-40;}}) // temperature ºC
+		.uint8('GroupMaxCellTemp',			{ formatter: (x) => {return x-40;}}) // temperature ºC
 		.uint8('CmuRxOpStatusNodeId')
 		.uint8('CmuRxOpStatusGroupAck')
 		.uint8('CmuRxOpStatusUSN')
 		.uint8('CmuRxOpParamNodeId')
-		.uint8('SystemOpStatus') // Choices
-		.uint8('SystemAuthMode') // Choices
-		.int16le('SupplyVolt',		{ formatter: (x) => {return x/100;}})
-		.uint8('AmbientTemp',		{ formatter: (x) => {return x-40;}})
+		.uint8('SystemOpStatus') /* Choices
+				Simulator = 0,   	  // LED = rainbow pulse
+				Idle = 1,        	  // LED = green slow pulse
+				Discharging = 2, 	  // LED = green solid 
+				SoC Empty = 3,   	  // LED = green double blink
+				Charging = 4,    	  // LED = blue slow pulse
+				Full = 5,        	  // LED = blue double blink
+				Timeout = 6,     	  // LED = red solid
+				Critical Pending = 7, // LED = red fast pulse
+				Critical Offline = 8, // LED = red slow pulse
+				Mqtt Offline = 9,     // LED = white blink
+				Auth Setup = 10,      // LED = white solid
+				Shunt Timeout = 11,   // LED = red solid  	*/
+		.uint8('SystemAuthMode') /* Choices
+				Default = 0,
+				Technician = 1,
+				Factory = 2, */
+		.int16le('SupplyVolt',				{ formatter: (x) => {return x/100;}})
+		.uint8('AmbientTemp',				{ formatter: (x) => {return x-40;}})   // temperature ºC
 		.uint32le('SystemTime') // Epoch
-		.uint8('ShuntSOC', 		{ formatter: (x) => {return x/2-5;}})
-		.uint8('ShuntTemp',		{ formatter: (x) => {return x-40;}})
-		.floatle('NomCapacityToFull',{ formatter: (x) => {return x/1000;}}) 
-		.floatle('NomCapacityToEmpty',{ formatter: (x) => {return x/1000;}})
-		.uint8('ShuntPollerMode') // Choices
-		.uint8('ShuntStatus') // Choices
+		.uint8('ShuntSOC', 					{ formatter: (x) => {return x/2-5;}})  // percent
+		.uint8('ShuntTemp',					{ formatter: (x) => {return x-40;}})   // temperature ºC
+		.floatle('NomCapacityToFull',		{ formatter: (x) => {return x/1000;}}) // Ah
+		.floatle('NomCapacityToEmpty',		{ formatter: (x) => {return x/1000;}}) // Ah
+		.uint8('ShuntPollerMode') /* Choices
+				Idle Start = 0,
+				Idle = 1,
+				Sync Start = 2,
+				Sync Running = 3,
+				Normal = 4,
+				ShuntMon2 SetupStart = 5,
+				ShuntMon2 SetupRunning = 6,
+				ShuntMon2 Normal = 7, */
+		.uint8('ShuntStatus') /* Choices
+				Timeout = 0,
+				Discharging = 1,
+				Idle = 2,
+				Charging = 4 */
 		.uint8('hasShuntLoSocRecal') // bool
 		.uint8('hasShuntHiSocRecal') // bool
-		.uint8('Expansion_OutputFet5') // bool
-		.uint8('Expansion_OutputFet6') // bool
-		.uint8('Expansion_OutputFet7') // bool
-		.uint8('Expansion_OutputFet8') // bool
-		.uint8('Expansion_OutputRelay1') // bool
-		.uint8('Expansion_OutputRelay2') // bool
-		.uint8('Expansion_OutputRelay3') // bool
-		.uint8('Expansion_OutputRelay4') // bool
-		.int16le('Expansion_OutputPwm1') // bool
-		.int16le('Expansion_OutputPwm2') // bool
-		.uint8('Expansion_Input1') // bool
-		.uint8('Expansion_Input2') // bool
-		.uint8('Expansion_Input3') // bool
-		.uint8('Expansion_Input4') // bool
-		.uint8('Expansion_Input5') // bool
-		.int16le('Expansion_InputAIN1') // bool
-		.int16le('Expansion_InputAIN2') // bool
-		.floatle('MinBypassSession', { formatter: (x) => {return x/1000;}})
-		.floatle('MaxBypassSession', { formatter: (x) => {return x/1000;}})
+		//  shunt.hasShuntOkSocRange = !(shunt.hasShuntLoSocRecal || shunt.hasShuntHiSocRecal);
+		.uint8('ExpansionOutputFet5') 		// 0 = Off , 1 = On
+		.uint8('ExpansionOutputFet6') 		// 0 = Off , 1 = On
+		.uint8('ExpansionOutputFet7') 		// 0 = Off , 1 = On
+		.uint8('ExpansionOutputFet8') 		// 0 = Off , 1 = On
+		.uint8('ExpansionOutputRelay1') 	// 0 = Off , 1 = On
+		.uint8('ExpansionOutputRelay2') 	// 0 = Off , 1 = On
+		.uint8('ExpansionOutputRelay3') 	// 0 = Off , 1 = On
+		.uint8('ExpansionOutputRelay4') 	// 0 = Off , 1 = On
+		.int16le('ExpansionOutputPwm1') 
+		.int16le('ExpansionOutputPwm2') 
+		.uint8('ExpansionInput1') 			// 0 = Off , 1 = On
+		.uint8('ExpansionInput2') 			// 0 = Off , 1 = On
+		.uint8('ExpansionInput3') 			// 0 = Off , 1 = On
+		.uint8('ExpansionInput4') 			// 0 = Off , 1 = On
+		.uint8('ExpansionInput5') 
+		.int16le('ExpansionInputAIN1') 
+		.int16le('ExpansionInputAIN2') 
+		.floatle('MinBypassSession', 		{ formatter: (x) => {return x/1000;}}) // Ah
+		.floatle('MaxBypassSession', 		{ formatter: (x) => {return x/1000;}}) // Ah
 		.uint8('MinBypassSessionID')
 		.uint8('MaxBypassSessionID')
-		.uint8('RebalanceBypassExtra')  //bool
-		.int16le('RepeatCellVoltCounter') // bool
+		.uint8('RebalanceBypassExtra')  	//bool
+		.int16le('RepeatCellVoltCounter') 
 		
 		return status.parse(msg);
 	}
