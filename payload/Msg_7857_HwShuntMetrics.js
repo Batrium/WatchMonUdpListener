@@ -20,8 +20,8 @@
 		.uint32le('RecentTimeSocHiRecal') 	// Epoch
 		.uint32le('RecentTimeSocCountLo') 	// Epoch
 		.uint32le('RecentTimeSocCountHi') 	// Epoch
-		.uint32le('hasShuntSocCountLo') 	// boolean 0 = Off , 1 = On
-		.uint32le('hasShuntSocCountHi') 	// boolean 0 = Off , 1 = On
+		.uint8(  'hasShuntSocCountLo') 		// boolean 0 = Off , 1 = On
+		.uint8(  'hasShuntSocCountHi') 		// boolean 0 = Off , 1 = On
 		.int16le('EstDurationToFullmins') 
 		.int16le('EstDurationToEmptymins') 
 		.floatle('ShuntAcculmAvgCharge',	{ formatter: (x) => {return x/1000;}})	// Ah

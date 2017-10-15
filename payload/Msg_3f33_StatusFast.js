@@ -79,23 +79,23 @@
 				Discharging = 1,
 				Idle = 2,
 				Charging = 4 */
-		.uint8('hasShuntLoSocRecal') // bool
-		.uint8('hasShuntHiSocRecal') // bool
+		.uint8('hasShuntLoSocRecal')		// boolean 0 = Off , 1 = On
+		.uint8('hasShuntHiSocRecal') 		// boolean 0 = Off , 1 = On
 		//  shunt.hasShuntOkSocRange = !(shunt.hasShuntLoSocRecal || shunt.hasShuntHiSocRecal);
-		.uint8('ExpansionOutputFet5') 		// 0 = Off , 1 = On
-		.uint8('ExpansionOutputFet6') 		// 0 = Off , 1 = On
-		.uint8('ExpansionOutputFet7') 		// 0 = Off , 1 = On
-		.uint8('ExpansionOutputFet8') 		// 0 = Off , 1 = On
-		.uint8('ExpansionOutputRelay1') 	// 0 = Off , 1 = On
-		.uint8('ExpansionOutputRelay2') 	// 0 = Off , 1 = On
-		.uint8('ExpansionOutputRelay3') 	// 0 = Off , 1 = On
-		.uint8('ExpansionOutputRelay4') 	// 0 = Off , 1 = On
+		.uint8('ExpansionOutputFet5') 		// boolean 0 = Off , 1 = On
+		.uint8('ExpansionOutputFet6') 		// boolean 0 = Off , 1 = On
+		.uint8('ExpansionOutputFet7') 		// boolean 0 = Off , 1 = On
+		.uint8('ExpansionOutputFet8') 		// boolean 0 = Off , 1 = On
+		.uint8('ExpansionOutputRelay1') 	// boolean 0 = Off , 1 = On
+		.uint8('ExpansionOutputRelay2') 	// boolean 0 = Off , 1 = On
+		.uint8('ExpansionOutputRelay3') 	// boolean 0 = Off , 1 = On
+		.uint8('ExpansionOutputRelay4') 	// boolean 0 = Off , 1 = On
 		.int16le('ExpansionOutputPwm1') 
 		.int16le('ExpansionOutputPwm2') 
-		.uint8('ExpansionInput1') 			// 0 = Off , 1 = On
-		.uint8('ExpansionInput2') 			// 0 = Off , 1 = On
-		.uint8('ExpansionInput3') 			// 0 = Off , 1 = On
-		.uint8('ExpansionInput4') 			// 0 = Off , 1 = On
+		.uint8('ExpansionInput1') 			// boolean 0 = Off , 1 = On
+		.uint8('ExpansionInput2') 			// boolean 0 = Off , 1 = On
+		.uint8('ExpansionInput3') 			// boolean 0 = Off , 1 = On
+		.uint8('ExpansionInput4') 			// boolean 0 = Off , 1 = On
 		.uint8('ExpansionInput5') 
 		.int16le('ExpansionInputAIN1') 
 		.int16le('ExpansionInputAIN2') 
@@ -103,7 +103,7 @@
 		.floatle('MaxBypassSession', 		{ formatter: (x) => {return x/1000;}}) // Ah
 		.uint8('MinBypassSessionID')
 		.uint8('MaxBypassSessionID')
-		.uint8('RebalanceBypassExtra')  	//bool
+		.uint8('RebalanceBypassExtra')  	// boolean 0 = Off , 1 = On
 		.int16le('RepeatCellVoltCounter') 
 		
 		return status.parse(msg);

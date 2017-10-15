@@ -14,7 +14,7 @@
 	{
 		var status = new Parser()
 		.skip(8)
-		.uint8('HwShunt.ShuntTypeID')  /* ShuntTypes
+		.uint8('HwShuntShuntType')  /* ShuntTypes
 				None            				= 0,
 				SFP102MOD 100uOhm 375A 150V 	= 1, 
 				SFP101EVB 72uOhm 500A 150V     	= 2,
