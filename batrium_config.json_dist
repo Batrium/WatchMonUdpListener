@@ -1,0 +1,41 @@
+{
+	"3e5a" : {
+		"mqtt" : true,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "generic"
+	},
+	"3e5a" : {
+		"mqtt" : true,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "generic"
+	},
+	"3f33" : {
+		"mqtt" : true,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "generic"
+	},
+	"7857" : {
+		"mqtt" : true,
+		"influx" : false, 
+		"info" : "Dont use influx on message 7857",
+		"tag" : "general",
+		"serie" : "generic"
+	},
+	"5732" : {
+		"mqtt" : true,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "generic"
+	},
+	"all" : {
+		"mqtt" : false,
+		"influx" :false,
+		"info" : "Do not run every message to influx. you will kill the machine if running raspberry pi!"
+	}
+}
+
+
+
