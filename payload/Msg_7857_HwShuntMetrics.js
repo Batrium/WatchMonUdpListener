@@ -2,7 +2,7 @@
 { 
 	var Parser = require('binary-parser').Parser;
 
-	// Category    = Hardware Metrics
+	// Category    = Telemetry Metrics
 	// Object      = Shunt
 	// MsgLength   = 76
 	// Description = Hardware shunt metrics
