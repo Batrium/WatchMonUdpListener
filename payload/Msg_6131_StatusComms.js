@@ -95,7 +95,6 @@
 				Simulator Running = 13, */
 		.uint8('CmuOpStatus') /* Choices */
 		.uint8('CmuTxCmdTicks')
-		.uint8('CmuRxCmdTicks')
 		
 		return status.parse(msg);
 	}

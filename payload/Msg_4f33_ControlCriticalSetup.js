@@ -10,7 +10,7 @@
 	// Frequency   = 20 seconds
 	// Support     = Current
 	// Valid to    = SW 1.0.29
-	this.parse_4F33 = function(msg) 
+	this.parse_4f33 = function(msg) 
 	{
 		var status = new Parser()
 		.skip(8)
