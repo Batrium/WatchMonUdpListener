@@ -1,13 +1,3 @@
-// Port that Batrium listens too
-var PORT = 18542;
-
-//MQTT server  generally localhost
-var mqtthost = 'localhost';
-var influxhost = 'localhost';
-
-
-
-// 
 // Watchmon UDP Listener for your Batrium BMS system
 //
 // Created by daromer aka DIY Tech and Repairs 
@@ -17,30 +7,36 @@ var influxhost = 'localhost';
 //
 // creating a udp server
 var udp = require('dgram');
+var mqtt = require('mqtt')
 var server = udp.createSocket('udp4');
 var Parser = require('binary-parser').Parser;
+const Influx = require('influx');
+var fs = require('fs');
+
+
+
+
+//Loading configuration file. 
+try {
+	var config = JSON.parse(fs.readFileSync('batrium_config.json', "utf8"));
+}
+catch (e) {
+	errorText('Could not load configuration file. Will therefore not send any data out. file missing is batrium_config.json. Perhaps copy the dist file?'); 
+	console.log(e);
+	var config = {'all':{'mqtt':{},'influx':{}}, 'hej': {}};
+}
+
+//MQTT server  generally localhost
+var mqtthost = (config.config.mqtthost) ? config.config.mqtthost : 'localhost';
+var influxhost = (config.config.influxhost) ? config.config.influxhost :'localhost';
+var influxdatabase = (config.config.influxdatabase) ? config.config.influxdatabase :'localhost';
 
 //Setup MQTT
-var mqtt = require('mqtt')
 var client  = mqtt.connect('mqtt://' + mqtthost)
 
-const Influx = require('influx');
-
 const influx = new Influx.InfluxDB({
-  host: 'localhost',
-  database: 'batrium',
-  schema: [
-    {
-      measurement: 'response_times',
-      fields: {
-        path: Influx.FieldType.STRING,
-        duration: Influx.FieldType.INTEGER
-      },
-      tags: [
-        'host'
-      ]
-    }
-  ]
+  host: influxhost,
+  database: influxdatabase,
 })
 
 
@@ -57,6 +53,17 @@ function getPayload(data) {
 	
 	 return payload.parse(data);
 }
+
+function getArrayObject(msg) {
+
+	obj = Object.assign(payload, eval(messages[payload.MessageId])(msg))
+	
+		
+	return obj;
+}
+
+
+
 
 
 // Function to handle and send out data to MQTT service
@@ -112,9 +119,6 @@ server.on('error',function(error){
 
 
 var normalizedPath = require("path").join(__dirname, "payload");
-
-
-
 console.log('Batrium logger started');
 
 // Function to load in all parsers from the payload folder. Those not able to load will be discarded during startup. 
@@ -139,18 +143,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 debug = false;
 debugMQTT = false;
 var tag;
-var fs = require('fs');
-
-//Loading configuration file. 
-try {
-	var config = JSON.parse(fs.readFileSync('batrium_config.json', "utf8"));
-}
-catch (e) {
-	errorText('Could not load configuration file. Will therefore not send any data out. file missing is batrium_config.json. Perhaps copy the dist file?'); 
-	console.log(e);
-	var config = {'all':{'mqtt':{},'influx':{}}, 'hej': {}};
-}
-
+// Parse new messages incomming from Batrium 
 server.on('message',function(msg,info){
 	payload = getPayload(msg);
 	process.stdout.write("\x1b[34mData recieved from\x1b[0m " + payload.SystemId  + " \x1b[34mand message is:\x1b[0m " + payload.MessageId + " \r");
@@ -158,10 +151,10 @@ server.on('message',function(msg,info){
 	if(payload.MessageId in messages) {
 		// If error in message lets try/catch it so we dont rage quit
 		try {
-		obj = Object.assign(payload, eval(messages[payload.MessageId])(msg)); 
-		if (debug) console.log(obj);	
-		if (config[payload.MessageId] && config[payload.MessageId].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
-		if (config[payload.MessageId] && config[payload.MessageId].influx || config.all.influx) sendInflux(obj, tag);
+			obj = Object.assign(payload, eval(messages[payload.MessageId])(msg)); 
+			if (debug) console.log(obj);	
+			if (config[payload.MessageId] && config[payload.MessageId].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
+			if (config[payload.MessageId] && config[payload.MessageId].influx || config.all.influx) sendInflux(obj, tag);
 		} catch (e) {
 			errorText('Couldnt get payload for ' + payload.MessageId + ' Size: %s',msg.length);
 			console.log(e);

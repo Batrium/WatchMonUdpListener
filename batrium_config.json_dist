@@ -1,4 +1,9 @@
 {
+	"config" : {
+		"mqtthost" : "localhost",
+		"influxhost" : "localhost",
+		"influxdatabase" : "batrium"
+	},
 	"3e5a" : {
 		"mqtt" : true,
 		"influx" : true,
@@ -37,6 +42,14 @@
 		"serie" : "nodes",
 		"tagID" : "ID"
 	},
+	"415a" : {
+		"mqtt" : true,
+		"influx" : false,
+		"tag" : "general",
+		"serie" : "nodes2",
+		"info" : "Dont send this message to influx. its not supported. if you need the data stored in influx use MQTT and then parse it first"
+	},
+
 
 	"all" : {
 		"mqtt" : false,
