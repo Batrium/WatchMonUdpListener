@@ -12,36 +12,45 @@
 	// Valid to    = SW 1.0.29
 	this.parse_415a = function(msg) 
 	{		
+		var subParser = new Parser()
+		.uint8('ID')
+                .uint8('USN')
+                .int16le('MinCellVolt',                 { formatter: (x) => {return x/1000;}})
+                .int16le('MaxCellVolt',                 { formatter: (x) => {return x/1000;}})
+                .uint8('MinCellTemp',                   { formatter: (x) => {return x-40;}}) // temperature ºC
+                .uint8('BypassTemp',                    { formatter: (x) => {return x-40;}}) // temperature ºC
+                .int16le('BypassAmp',                   { formatter: (x) => {return x/1000;}})
+                .uint8('Status'); /* Choices NodeStatuses
+                                None = 0,
+                                HighVolt = 1,
+                                HighTemp = 2,
+                                Ok = 3,
+                                Timeout = 4,
+                               LowVolt = 5,
+A                               Disabled = 6,i
+			       InBypass = 7,
+                                InitialBypass = 8,
+                                FinalBypass = 9,
+                                MissingSetup = 10,
+                                NoConfig = 11,
+                                CellOutLimits = 12, */
+
 		var status = new Parser()
 		.skip(8)
 		.uint8('CmuRxOpStatusNodeID')
-		
-		
-		.uint8('ID')
-		.uint8('USN')
-		.int16le('MinCellVolt',			{ formatter: (x) => {return x/1000;}})
-		.int16le('MaxCellVolt',			{ formatter: (x) => {return x/1000;}})
-		.uint8('MinCellTemp',			{ formatter: (x) => {return x-40;}}) // temperature ºC
-		.uint8('BypassTemp',			{ formatter: (x) => {return x-40;}}) // temperature ºC
-		.int16le('BypassAmp', 			{ formatter: (x) => {return x/1000;}})
-		.uint8('Status') /* Choices NodeStatuses
-				None = 0,
-				HighVolt = 1,
-				HighTemp = 2,
-				Ok = 3,
-				Timeout = 4,
-				LowVolt = 5,
-				Disabled = 6,
-				InBypass = 7,
-				InitialBypass = 8,
-				FinalBypass = 9,
-				MissingSetup = 10,
-				NoConfig = 11,
-				CellOutLimits = 12, */	
-		
-		
+		.uint8('Records')
+		.uint8('FirstNodeID')
+		.uint8('LastNodeID')
+		.array('nodes', {
+			type : subParser,
+			length : 'Records'
+		})
+
+
 		return status.parse(msg);
 	}
+
+
 }
 
 /*
