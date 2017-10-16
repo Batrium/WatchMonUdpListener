@@ -16,7 +16,7 @@
 		.skip(8)
 		.uint8('CmuRxOpStatusNodeID')
 		
-		/*
+		
 		.uint8('ID')
 		.uint8('USN')
 		.int16le('MinCellVolt',			{ formatter: (x) => {return x/1000;}})
@@ -38,7 +38,7 @@
 				MissingSetup = 10,
 				NoConfig = 11,
 				CellOutLimits = 12, */	
-		*/
+		
 		
 		return status.parse(msg);
 	}

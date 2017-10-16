@@ -18,18 +18,26 @@
 		"serie" : "generic"
 	},
 	"7857" : {
-		"mqtt" : true,
+		"mqtt" : false,
 		"influx" : false, 
 		"info" : "Dont use influx on message 7857",
 		"tag" : "general",
 		"serie" : "generic"
 	},
 	"5732" : {
-		"mqtt" : true,
-		"influx" : true,
+		"mqtt" : false,
+		"influx" : false,
 		"tag" : "general",
 		"serie" : "generic"
 	},
+	"4232" : {
+		"mqtt" : false,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "nodes",
+		"tagID" : "ID"
+	},
+
 	"all" : {
 		"mqtt" : false,
 		"influx" :false,
