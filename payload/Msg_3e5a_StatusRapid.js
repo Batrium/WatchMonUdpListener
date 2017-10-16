@@ -12,7 +12,6 @@
 	// Valid to    = SW 1.0.29
 	this.parse_3e5a = function(msg) 
 	{
-			
 		var status = new Parser()
 		.skip(8)
 		.int16le('MinCellVolt',		{ formatter: (x) => {return x/1000;}})
