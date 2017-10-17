@@ -3,9 +3,9 @@
 WatchMon UDP Binary Listener translates to JSON and stores to influxdb or sends it to MQTT
 
 ## Getting Started
-
+```
 git clone https://github.com/Batrium/WatchMonUdpListener
-
+```
 or
 
 Download premade Raspberry PI 3 ISO with everything built in:
@@ -19,16 +19,20 @@ Binary-Parser
 Influx
 
 How to install them:
-
+```
 npm install mqtt
 npm install binary-parser
 npm install influx
+```
 
 ### Installing
 
 Start with copying the batrium_config.json_dist to batrium_config.json
+
 Example code in linux: 
+```
 cp batrium_config.json_dist batrium_config.json
+```
 
 Edit the file to suit your needs. 
 In the file you have 4 tags for each message:
@@ -45,27 +49,33 @@ The configuration also holds ip/dns for the MQTT brooker and Influx.
 If you have them on localhost you can leave it as is. 
 
 Example config for main setup:
+```
  	"config" : {
                 "mqtthost" : "localhost",
                 "influxhost" : "localhost",
                 "influxdatabase" : "batrium"
         },
-
+```
 Example config for a message:
-        "3e5a" : {
+   ```
+    "3e5a" : {
                 "mqtt" : true,
                 "influx" : true,
                 "tag" : "general",
                 "serie" : "generic"
         },
-
+```
 When you have cloned the git repo and setup the configuration in the configuration files you also need to prepare
 the database. In the config section you define the influxdatabase and that one need to be created in InfluxDB
 
 Run:
+```
 influxdb
+```
 then you run: (Change to the database you want to use)
+```
 create database batrium 
+```
 
 When all this is done its just a matter of running the application
 
