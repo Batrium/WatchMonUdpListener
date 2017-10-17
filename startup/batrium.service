@@ -1,0 +1,21 @@
+[Unit]
+Description=Batrium Logger v1
+After=influxdb      
+
+[Service]
+ExecStart=/usr/bin/node /energy-logger/batrium/batrium.js
+# Required on some systems
+WorkingDirectory=/energy-logger/batrium/
+Restart=always
+ # Restart service after 10 seconds if node service crashes
+ RestartSec=120
+ # Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=solar_batrium
+#User=<alternate user>
+#Group=<alternate group>
+Environment=NODE_ENV=production PORT=1337
+
+[Install]
+WantedBy=multi-user.target
