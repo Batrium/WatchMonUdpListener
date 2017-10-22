@@ -1,11 +1,11 @@
 [Unit]
-Description=Batrium Logger v1
+Description=Batrium WatchMonUdpListener
 After=influxdb      
 
 [Service]
-ExecStart=/usr/bin/node /energy-logger/batrium/batrium.js
+ExecStart=/usr/bin/node /energy-logger/WatchMonUdpListener/batrium.js
 # Required on some systems
-WorkingDirectory=/energy-logger/batrium/
+WorkingDirectory=/energy-logger/WatchMonUdpListener/
 Restart=always
  # Restart service after 10 seconds if node service crashes
  RestartSec=120
