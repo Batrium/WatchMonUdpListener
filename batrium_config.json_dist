@@ -4,13 +4,7 @@
 		"influxhost" : "localhost",
 		"influxdatabase" : "batrium"
 	},
-	"3e5a" : {
-		"mqtt" : true,
-		"influx" : true,
-		"tag" : "general",
-		"serie" : "generic"
-	},
-	"3e5a" : {
+	"3e32" : {
 		"mqtt" : true,
 		"influx" : true,
 		"tag" : "general",
@@ -37,7 +31,7 @@
 	},
 	"4232" : {
 		"mqtt" : false,
-		"influx" : true,
+		"influx" : false,
 		"tag" : "general",
 		"serie" : "nodes",
 		"tagID" : "ID"
