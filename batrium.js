@@ -147,12 +147,16 @@ var tag;
 server.on('message',function(msg,info){
 	payload = getPayload(msg);
 	process.stdout.write("\x1b[34mData recieved from\x1b[0m " + payload.SystemId  + " \x1b[34mand message is:\x1b[0m " + payload.MessageId + " \r");
-
+	messageID = payload.MessageId.substring(0,2);	// uggly but it just brings out the message id and removes the versiion
 	if(payload.MessageId in messages) {
 		// If error in message lets try/catch it so we dont rage quit
 		try {
 			obj = Object.assign(payload, eval(messages[payload.MessageId])(msg)); 
 			if (debug) console.log(obj);	
+			// check if the message id is present in the config. This dont care what version is there if file exist
+			if (config[messageID] && config[messageID].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
+			if (config[messageID] && config[messageID].influx || config.all.influx) sendInflux(obj, tag);
+		 	// Below is used if you use messageid and version in the configuration file	
 			if (config[payload.MessageId] && config[payload.MessageId].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
 			if (config[payload.MessageId] && config[payload.MessageId].influx || config.all.influx) sendInflux(obj, tag);
 		} catch (e) {
