@@ -10,6 +10,12 @@
 		"tag" : "general",
 		"serie" : "generic"
 	},
+	"3e52" : {
+		"mqtt" : true,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "generic"
+	},
 	"3f33" : {
 		"mqtt" : true,
 		"influx" : true,

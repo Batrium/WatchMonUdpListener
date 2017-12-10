@@ -82,7 +82,7 @@ function sendInflux(data, tag) {
 	tg = { systemId: data.SystemId, messageId: data.MessageId, messageType: (config[data.MessageId] && config[data.MessageId].tag  ) ? config[data.MessageId].tag: 'generic' };
 	// IF its node based we need to add the node-tag to it as well
 	(config[data.MessageId] && config[data.MessageId].tagID  ) ? tg['nodeID'] =  data[config[data.MessageId].tagID]  : '';
-		
+	
 	influx.writeMeasurement((config[data.MessageId] && config[data.MessageId].serie  ) ? config[data.MessageId].serie: 'generic', [
   	{
 	  tags: tg,
