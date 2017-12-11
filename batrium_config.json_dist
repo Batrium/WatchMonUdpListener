@@ -36,6 +36,12 @@
 		"serie" : "nodes",
 		"tagID" : "ID"
 	},
+	"54" : {
+		"mqtt" : false,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "daily"
+	},
 	"41" : {
 		"mqtt" : true,
 		"influx" : false,

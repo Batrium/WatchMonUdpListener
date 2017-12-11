@@ -81,12 +81,13 @@ When all this is done its just a matter of running the application
 
 ## Automatic startup
 
-<- information about automatic start need to be added here and files added. 
-
+There is currently no automatic setup. The closest you will get is to use the prebuilt Grafana ISO
 
 ## Contributing
 
-For contributing to this project you can either add it up as an issue here on Github or to this page on the DIYPowerwalls forum:
+For contributing to this project you can support Batrium by getting HW from them. Supporting the creator of this script by Patreon/Paypal/Subscribing to youtube channel.
+And the most important is to report any issues/bugs or features that you want to see sorted or fixed. 
+All added contributions are much appreciated!
 
 
 ## Authors
@@ -95,7 +96,7 @@ For contributing to this project you can either add it up as an issue here on Gi
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
 
 ## Acknowledgments
 
