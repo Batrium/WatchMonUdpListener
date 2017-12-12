@@ -146,7 +146,7 @@ var tag;
 // Parse new messages incomming from Batrium 
 server.on('message',function(msg,info){
 	payload = getPayload(msg);
-	process.stdout.write("\x1b[34mData recieved from\x1b[0m " + payload.SystemId  + " \x1b[34mand message is:\x1b[0m " + payload.MessageId + " \r");
+	//process.stdout.write("\x1b[34mData recieved from\x1b[0m " + payload.SystemId  + " \x1b[34mand message is:\x1b[0m " + payload.MessageId + " \r");
 	messageID = payload.MessageId.substring(0,2);	// uggly but it just brings out the message id and removes the versiion
 	if(payload.MessageId in messages) {
 		// If error in message lets try/catch it so we dont rage quit
