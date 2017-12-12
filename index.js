@@ -4,7 +4,7 @@
 // http://diytechandrepairs.nu
 // https://www.youtube.com/user/daromeresperyd
 //
-//
+// MIT Licensed
 // creating a udp server
 var udp = require('dgram');
 var mqtt = require('mqtt')
@@ -18,10 +18,10 @@ var fs = require('fs');
 
 //Loading configuration file. 
 try {
-	var config = JSON.parse(fs.readFileSync('batrium_config.json', "utf8"));
+	var config = JSON.parse(fs.readFileSync('config.json', "utf8"));
 }
 catch (e) {
-	errorText('Could not load configuration file. Will therefore not send any data out. file missing is batrium_config.json. Perhaps copy the dist file?'); 
+	errorText('Could not load configuration file. Will therefore not send any data out. file missing is config.json. Perhaps copy the dist file?'); 
 	console.log(e);
 	var config = {'all':{'mqtt':{},'influx':{}}, 'hej': {}};
 }
