@@ -27,6 +27,12 @@ npm install influx
 
 ### Installing
 
+Either install every NPM package manually as stated above or run 
+```
+npm install
+```
+In the main folder that was cloned from here. 
+
 Start with copying the batrium_config.json_dist to batrium_config.json
 
 Example code in linux: 
