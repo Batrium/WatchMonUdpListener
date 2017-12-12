@@ -7,9 +7,13 @@ WatchMon UDP Binary Listener translates to JSON and stores to influxdb or sends 
 git clone https://github.com/Batrium/WatchMonUdpListener
 ```
 or
+```
+npm install watchmonudplistener
+```
+or
 
 Download premade Raspberry PI 3 ISO with everything built in:
-<--link-->
+http://diytechandrepairs.nu/raspberry-solar/
 
 
 ### Prerequisites
@@ -18,7 +22,7 @@ MQTT
 Binary-Parser
 Influx
 
-How to install them:
+How to install them: (If you clone from GitHub)
 ```
 npm install mqtt
 npm install binary-parser
@@ -27,17 +31,13 @@ npm install influx
 
 ### Installing
 
-Either install every NPM package manually as stated above or run 
-```
-npm install
-```
-In the main folder that was cloned from here. 
+Main install in "Get started"
 
 Start with copying the batrium_config.json_dist to batrium_config.json
 
 Example code in linux: 
 ```
-cp batrium_config.json_dist batrium_config.json
+cp config.json_dist config.json
 ```
 
 Edit the file to suit your needs. 
@@ -106,7 +106,8 @@ systemctl disable batrium.service
 ```
 ## Contributing
 
-For contributing to this project you can support Batrium by getting HW from them. Supporting the creator of this script by Patreon/Paypal/Subscribing to youtube channel.
+For contributing to this project you can support Batrium by getting HW from them. 
+Supporting the creator of this script by Patreon/Paypal/Subscribing to youtube channel.
 And the most important is to report any issues/bugs or features that you want to see sorted or fixed. 
 All added contributions are much appreciated!
 
