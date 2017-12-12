@@ -3,7 +3,7 @@ Description=Batrium WatchMonUdpListener
 After=influxdb      
 
 [Service]
-ExecStart=/usr/bin/node /energy-logger/WatchMonUdpListener/batrium.js
+ExecStart=/usr/bin/node /energy-logger/WatchMonUdpListener/index.js
 # Required on some systems
 WorkingDirectory=/energy-logger/WatchMonUdpListener/
 Restart=always

@@ -89,6 +89,10 @@ When all this is done its just a matter of running the application
 
 ```
 cp systemctl/batrium.service /etc/systemd/system/
+```
+Be sure to update paths in the file acordingly to where you installed the Batrium UDP listener
+
+```
 systemctl --system daemon-reload
 ```
 
