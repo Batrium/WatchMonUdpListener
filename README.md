@@ -87,8 +87,19 @@ When all this is done its just a matter of running the application
 
 ## Automatic startup
 
-There is currently no automatic setup. The closest you will get is to use the prebuilt Grafana ISO
+```
+cp systemctl/batrium.service /etc/systemd/system/
+systemctl --system daemon-reload
+```
 
+To enable:
+```
+systemctl enable batrium.service
+```
+To disable
+```
+systemctl disable batrium.service
+```
 ## Contributing
 
 For contributing to this project you can support Batrium by getting HW from them. Supporting the creator of this script by Patreon/Paypal/Subscribing to youtube channel.
