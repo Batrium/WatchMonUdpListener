@@ -108,6 +108,9 @@ systemctl disable batrium.service
 
 For contributing to this project you can support Batrium by getting HW from them. 
 Supporting the creator of this script by Patreon/Paypal/Subscribing to youtube channel.
+Patreon: https://www.patreon.com/diytech
+Youtube: https://www.youtube.com/user/daromeresperyd
+Webpage with more ways to contribute: http://diytechandrepairs.nu/
 And the most important is to report any issues/bugs or features that you want to see sorted or fixed. 
 All added contributions are much appreciated!
 
