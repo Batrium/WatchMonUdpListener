@@ -1,6 +1,8 @@
 {
 	"config" : {
 		"mqtthost" : "localhost",
+		"mqttusername" : "mqtt",
+		"mqttpassword" : "mqtt",
 		"influxhost" : "localhost",
 		"influxdatabase" : "batrium"
 	},
@@ -10,7 +12,7 @@
 		"tag" : "general",
 		"serie" : "generic"
 	},
-	"3e5a" : {
+	"3e32" : {
 		"mqtt" : true,
 		"influx" : true,
 		"tag" : "general",

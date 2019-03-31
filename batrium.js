@@ -28,11 +28,19 @@ catch (e) {
 
 //MQTT server  generally localhost
 var mqtthost = (config.config.mqtthost) ? config.config.mqtthost : 'localhost';
+var mqttusername = (config.config.mqttusername) ? config.config.mqttusername : '';
+var mqttpassword = (config.config.mqttpassword) ? config.config.mqttpassword : '';
 var influxhost = (config.config.influxhost) ? config.config.influxhost :'localhost';
 var influxdatabase = (config.config.influxdatabase) ? config.config.influxdatabase :'localhost';
 
 //Setup MQTT
-var client  = mqtt.connect('mqtt://' + mqtthost)
+options={
+	clientId:"raspi",
+	username:mqttusername,
+	password:mqttpassword,
+	clean:true};
+
+var client  = mqtt.connect('mqtt://' + mqtthost, options)
 
 const influx = new Influx.InfluxDB({
   host: influxhost,
