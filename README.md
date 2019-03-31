@@ -7,9 +7,13 @@ WatchMon UDP Binary Listener translates to JSON and stores to influxdb or sends 
 git clone https://github.com/Batrium/WatchMonUdpListener
 ```
 or
+```
+npm install watchmonudplistener
+```
+or
 
 Download premade Raspberry PI 3 ISO with everything built in:
-<--link-->
+http://diytechandrepairs.nu/raspberry-solar/
 
 
 ### Prerequisites
@@ -18,7 +22,7 @@ MQTT
 Binary-Parser
 Influx
 
-How to install them:
+How to install them: (If you clone from GitHub)
 ```
 npm install mqtt
 npm install binary-parser
@@ -27,11 +31,13 @@ npm install influx
 
 ### Installing
 
+Main install in "Get started"
+
 Start with copying the batrium_config.json_dist to batrium_config.json
 
 Example code in linux: 
 ```
-cp batrium_config.json_dist batrium_config.json
+cp config.json_dist config.json
 ```
 
 Edit the file to suit your needs. 
@@ -81,12 +87,32 @@ When all this is done its just a matter of running the application
 
 ## Automatic startup
 
-<- information about automatic start need to be added here and files added. 
+```
+cp systemctl/batrium.service /etc/systemd/system/
+```
+Be sure to update paths in the file acordingly to where you installed the Batrium UDP listener
 
+```
+systemctl --system daemon-reload
+```
 
+To enable:
+```
+systemctl enable batrium.service
+```
+To disable
+```
+systemctl disable batrium.service
+```
 ## Contributing
 
-For contributing to this project you can either add it up as an issue here on Github or to this page on the DIYPowerwalls forum:
+For contributing to this project you can support Batrium by getting HW from them. 
+Supporting the creator of this script by Patreon/Paypal/Subscribing to youtube channel.
+Patreon: https://www.patreon.com/diytech
+Youtube: https://www.youtube.com/user/daromeresperyd
+Webpage with more ways to contribute: http://diytechandrepairs.nu/
+And the most important is to report any issues/bugs or features that you want to see sorted or fixed. 
+All added contributions are much appreciated!
 
 
 ## Authors
@@ -95,7 +121,7 @@ For contributing to this project you can either add it up as an issue here on Gi
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
 
 ## Acknowledgments
 

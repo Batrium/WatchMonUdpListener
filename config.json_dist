@@ -6,45 +6,39 @@
 		"influxhost" : "localhost",
 		"influxdatabase" : "batrium"
 	},
-	"3e5a" : {
+	"3e" : {
 		"mqtt" : true,
 		"influx" : true,
 		"tag" : "general",
 		"serie" : "generic"
 	},
-	"3e32" : {
-		"mqtt" : true,
-		"influx" : true,
-		"tag" : "general",
-		"serie" : "generic"
-	},
-	"3f33" : {
-		"mqtt" : true,
-		"influx" : true,
-		"tag" : "general",
-		"serie" : "generic"
-	},
-	"7857" : {
+	"78" : {
 		"mqtt" : false,
 		"influx" : false, 
 		"info" : "Dont use influx on message 7857",
 		"tag" : "general",
 		"serie" : "generic"
 	},
-	"5732" : {
+	"57" : {
 		"mqtt" : false,
 		"influx" : false,
 		"tag" : "general",
 		"serie" : "generic"
 	},
-	"4232" : {
+	"42" : {
 		"mqtt" : false,
-		"influx" : true,
+		"influx" : false,
 		"tag" : "general",
 		"serie" : "nodes",
 		"tagID" : "ID"
 	},
-	"415a" : {
+	"54" : {
+		"mqtt" : false,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "daily"
+	},
+	"41" : {
 		"mqtt" : true,
 		"influx" : false,
 		"tag" : "general",

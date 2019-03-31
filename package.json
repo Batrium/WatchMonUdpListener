@@ -1,0 +1,32 @@
+{
+  "name": "watchmonudplistener",
+  "version": "1.0.1",
+  "description": "UDP listener for the Batrium Watchmon BMS system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  "keywords": [
+    "solar",
+    "inverter",
+    "bms",
+    "batrium",
+    "watchmon"
+  ],
+  "author": "Batrium",
+  "contributors": 
+    { "name" : "Daniel Römer"
+    , "email" : "daromer@gmail.com"
+    , "url" : "http://diytechandrepairs.nu/"
+    },
+  "bugs": 
+    { "url" : "https://github.com/Batrium/WatchMonUdpListener/issues"
+    },
+  "license": "MIT",
+  "dependencies": {
+    "mqtt": "latest",
+    "binary-parser": "latest",
+    "influx": "latest"
+  }
+}

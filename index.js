@@ -4,7 +4,7 @@
 // http://diytechandrepairs.nu
 // https://www.youtube.com/user/daromeresperyd
 //
-//
+// MIT Licensed
 // creating a udp server
 var udp = require('dgram');
 var mqtt = require('mqtt')
@@ -18,10 +18,10 @@ var fs = require('fs');
 
 //Loading configuration file. 
 try {
-	var config = JSON.parse(fs.readFileSync('batrium_config.json', "utf8"));
+	var config = JSON.parse(fs.readFileSync('config.json', "utf8"));
 }
 catch (e) {
-	errorText('Could not load configuration file. Will therefore not send any data out. file missing is batrium_config.json. Perhaps copy the dist file?'); 
+	errorText('Could not load configuration file. Will therefore not send any data out. file missing is config.json. Perhaps copy the dist file?'); 
 	console.log(e);
 	var config = {'all':{'mqtt':{},'influx':{}}, 'hej': {}};
 }
@@ -90,7 +90,7 @@ function sendInflux(data, tag) {
 	tg = { systemId: data.SystemId, messageId: data.MessageId, messageType: (config[data.MessageId] && config[data.MessageId].tag  ) ? config[data.MessageId].tag: 'generic' };
 	// IF its node based we need to add the node-tag to it as well
 	(config[data.MessageId] && config[data.MessageId].tagID  ) ? tg['nodeID'] =  data[config[data.MessageId].tagID]  : '';
-		
+	
 	influx.writeMeasurement((config[data.MessageId] && config[data.MessageId].serie  ) ? config[data.MessageId].serie: 'generic', [
   	{
 	  tags: tg,
@@ -154,13 +154,17 @@ var tag;
 // Parse new messages incomming from Batrium 
 server.on('message',function(msg,info){
 	payload = getPayload(msg);
-	process.stdout.write("\x1b[34mData recieved from\x1b[0m " + payload.SystemId  + " \x1b[34mand message is:\x1b[0m " + payload.MessageId + " \r");
-
+	//process.stdout.write("\x1b[34mData recieved from\x1b[0m " + payload.SystemId  + " \x1b[34mand message is:\x1b[0m " + payload.MessageId + " \r");
+	messageID = payload.MessageId.substring(0,2);	// uggly but it just brings out the message id and removes the versiion
 	if(payload.MessageId in messages) {
 		// If error in message lets try/catch it so we dont rage quit
 		try {
 			obj = Object.assign(payload, eval(messages[payload.MessageId])(msg)); 
 			if (debug) console.log(obj);	
+			// check if the message id is present in the config. This dont care what version is there if file exist
+			if (config[messageID] && config[messageID].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
+			if (config[messageID] && config[messageID].influx || config.all.influx) sendInflux(obj, tag);
+		 	// Below is used if you use messageid and version in the configuration file	
 			if (config[payload.MessageId] && config[payload.MessageId].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
 			if (config[payload.MessageId] && config[payload.MessageId].influx || config.all.influx) sendInflux(obj, tag);
 		} catch (e) {
