@@ -64,7 +64,7 @@ Example config for main setup:
 ```
 Example config for a message:
    ```
-    "3e5a" : {
+    "3e" : {
                 "mqtt" : true,
                 "influx" : true,
                 "tag" : "general",
