@@ -12,6 +12,8 @@ var server = udp.createSocket('udp4');
 var Parser = require('binary-parser').Parser;
 const Influx = require('influx');
 var fs = require('fs');
+var moment = require('moment')
+var lastmessage = moment();
 
 
 
@@ -30,6 +32,7 @@ catch (e) {
 var mqtthost = (config.config.mqtthost) ? config.config.mqtthost : 'localhost';
 var mqttusername = (config.config.mqttusername) ? config.config.mqttusername : '';
 var mqttpassword = (config.config.mqttpassword) ? config.config.mqttpassword : '';
+var timeoutinseconds = (config.config.timeoutinseconds) ? config.config.timeoutinseconds : -1;
 var influxhost = (config.config.influxhost) ? config.config.influxhost :'localhost';
 var influxdatabase = (config.config.influxdatabase) ? config.config.influxdatabase :'localhost';
 
@@ -78,8 +81,13 @@ function getArrayObject(msg) {
 // It takes SystemId, MessageID and the data to send out. The data must be in Json format
 function sendMqtt(SystemId,MessageId,data) {
 
-	client.publish('Batrium/' + SystemId + '/' + MessageId , JSON.stringify(data));		
-	if (debugMQTT) console.log('Data sent to MQTT: Batrium/' + SystemId + '/' + MessageId);
+	var now = moment();
+	var secondsDiff = now.diff(lastmessage, 'seconds');
+	if (secondsDiff > timeoutinseconds) {
+		client.publish('Batrium/' + SystemId + '/' + MessageId , JSON.stringify(data));		
+		if (debugMQTT) console.log('Data sent to MQTT: Batrium/' + SystemId + '/' + MessageId);
+		lastmessage = now;
+	}
 }
 
 
@@ -185,7 +193,7 @@ server.on('listening',function(){
   var port = address.port;
   var family = address.family;
   var ipaddr = address.address;
-  console.log('Batrium logger Server is listening at port' + port);
+  console.log('Batrium logger Server is listening at port ' + port);
 });
 
 //emits after the socket is closed using socket.close();

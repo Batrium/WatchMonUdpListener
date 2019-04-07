@@ -27,6 +27,7 @@
   "dependencies": {
     "mqtt": "latest",
     "binary-parser": "latest",
-    "influx": "latest"
+    "influx": "latest",
+    "moment": "latest"
   }
 }

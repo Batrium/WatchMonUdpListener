@@ -3,6 +3,7 @@
 		"mqtthost" : "localhost",
 		"mqttusername" : "mqtt",
 		"mqttpassword" : "mqtt",
+		"timeoutinseconds" : -1,
 		"influxhost" : "localhost",
 		"influxdatabase" : "batrium"
 	},
