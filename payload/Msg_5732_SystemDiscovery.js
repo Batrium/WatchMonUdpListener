@@ -13,7 +13,7 @@
 	{
 		var status = new Parser()
 		.skip(8)
-		.string('SystemCode', 	{ encoding: 'ascii', length: 8 })
+		.string('SystemCode', 	{ encoding: 'ascii', length: 8, stripNull: true })
 		.int16le('SystemFirmwareVersion')
 		.int16le('SystemHardwareVersion')
 		.int32le('SystemTime') // Epoch
