@@ -26,6 +26,7 @@
   "dependencies": {
     "binary-parser": "latest",
     "influx": "latest",
-    "mqtt": "latest"
+    "mqtt": "latest",
+    "graphite": "latest"
   }
 }
