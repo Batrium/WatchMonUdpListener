@@ -51,25 +51,15 @@ const influx = new Influx.InfluxDB({
 // Function to get payload data
 // input data object
 // output payload data in json form
+const payloadParser = new Parser()
+	.string('first', { encoding: 'ascii', length: 1 })
+	.int16le('MessageId', { formatter: (x) => {return x.toString(16);}})
+	.string('nd', { encoding: 'ascii', length: 1 })
+	.int16le('SystemId')
+	.int16le('hubId');
 function getPayload(data) {
-     var payload = new Parser()
-         .string('first', { encoding: 'ascii', length: 1 })
-         .int16le('MessageId', { formatter: (x) => {return x.toString(16);}})
-         .string('nd', { encoding: 'ascii', length: 1 })
-         .int16le('SystemId')
-         .int16le('hubId')
-	
-	 return payload.parse(data);
+	 return payloadParser.parse(data);
 }
-
-function getArrayObject(msg) {
-
-	obj = Object.assign(payload, eval(messages[payload.MessageId])(msg))
-	
-		
-	return obj;
-}
-
 
 
 
