@@ -22,7 +22,7 @@ try {
 }
 catch (e) {
 	errorText('Could not load configuration file. Will therefore not send any data out. file missing is config.json. Perhaps copy the dist file?'); 
-	console.log(e);
+	console.error(e);
 	var config = {'all':{'mqtt':{},'influx':{}}, 'hej': {}};
 }
 
@@ -51,25 +51,15 @@ const influx = new Influx.InfluxDB({
 // Function to get payload data
 // input data object
 // output payload data in json form
+const payloadParser = new Parser()
+	.string('first', { encoding: 'ascii', length: 1 })
+	.int16le('MessageId', { formatter: (x) => {return x.toString(16);}})
+	.string('nd', { encoding: 'ascii', length: 1 })
+	.int16le('SystemId')
+	.int16le('hubId');
 function getPayload(data) {
-     var payload = new Parser()
-         .string('first', { encoding: 'ascii', length: 1 })
-         .int16le('MessageId', { formatter: (x) => {return x.toString(16);}})
-         .string('nd', { encoding: 'ascii', length: 1 })
-         .int16le('SystemId')
-         .int16le('hubId')
-	
-	 return payload.parse(data);
+	 return payloadParser.parse(data);
 }
-
-function getArrayObject(msg) {
-
-	obj = Object.assign(payload, eval(messages[payload.MessageId])(msg))
-	
-		
-	return obj;
-}
-
 
 
 
@@ -133,15 +123,14 @@ console.log('Batrium logger started');
 var messages = {};
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
 	try {
-
-		require("./payload/" + file)();
 		load = file.split("_")[1];
-		messages[load.toLowerCase()] = 'parse_' + load.toLowerCase();
+		messages[load.toLowerCase()] = require("./payload/" + file);
 		infoText('Loaded file: ' + file);
 
 	}
 	catch (e) {
  		errorText('Could not load file: ' + file)
+		console.error(e);
 	}
 });
 
@@ -159,7 +148,7 @@ server.on('message',function(msg,info){
 	if(payload.MessageId in messages) {
 		// If error in message lets try/catch it so we dont rage quit
 		try {
-			obj = Object.assign(payload, eval(messages[payload.MessageId])(msg)); 
+			obj = Object.assign(payload, messages[payload.MessageId](msg));
 			if (debug) console.log(obj);	
 			// check if the message id is present in the config. This dont care what version is there if file exist
 			if (config[messageID] && config[messageID].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
