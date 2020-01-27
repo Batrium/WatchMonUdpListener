@@ -27,6 +27,7 @@
   "dependencies": {
     "mqtt": "latest",
     "binary-parser": "latest",
+    "graphite": "latest",
     "influx": "latest"
   }
 }

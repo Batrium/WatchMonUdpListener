@@ -11,6 +11,7 @@ var mqtt = require('mqtt')
 var server = udp.createSocket('udp4');
 var Parser = require('binary-parser').Parser;
 const Influx = require('influx');
+const graphite = require('graphite');
 var fs = require('fs');
 
 
@@ -27,11 +28,13 @@ catch (e) {
 }
 
 //MQTT server  generally localhost
-var mqtthost = (config.config.mqtthost) ? config.config.mqtthost : 'localhost';
-var mqttusername = (config.config.mqttusername) ? config.config.mqttusername : '';
-var mqttpassword = (config.config.mqttpassword) ? config.config.mqttpassword : '';
-var influxhost = (config.config.influxhost) ? config.config.influxhost :'localhost';
-var influxdatabase = (config.config.influxdatabase) ? config.config.influxdatabase :'localhost';
+const mqtthost = config.config.mqtthost || 'localhost';
+const mqttusername = config.config.mqttusername || '';
+const mqttpassword = config.config.mqttpassword || '';
+const influxhost = config.config.influxhost || 'localhost';
+const influxdatabase = config.config.influxdatabase || 'localhost';
+const graphiteurl = config.config.graphiteurl || '';
+const graphiteprefix = config.config.graphiteprefix || '';
 
 //Setup MQTT
 options={
@@ -46,6 +49,8 @@ const influx = new Influx.InfluxDB({
   host: influxhost,
   database: influxdatabase,
 })
+
+const graphiteClient = graphite.createClient(graphiteurl);
 
 
 // Function to get payload data
@@ -94,6 +99,49 @@ function sendInflux(data, tag) {
 	);
 };
 
+
+function sendGraphite(systemId,messageId,data) {
+	const prefix = graphiteprefix + '.batrium' + systemId + '.';
+	var metrics = {};
+
+	switch (messageId) {
+		case "54":
+			metrics = {
+				[prefix + 'DailySessionCumulShuntkWhCharge']: data.DailySessionCumulShuntkWhCharge,
+				[prefix + 'DailySessionCumulShuntkWhDischg']: data.DailySessionCumulShuntkWhDischg,
+			};
+			break;
+		case "3e":
+			['ShuntVoltage', 'ShuntCurrent', 'ShuntPowerVA'].forEach((x) => {
+				metrics[prefix + x] = data[x];
+			});
+			break;
+		case "57":
+			['SystemOpStatus', 'ShuntSOC', 'ShuntVoltage', 'ShuntCurrent'].forEach((x) => {
+				metrics[prefix + x] = data[x];
+			});
+			break;
+		case "41":
+			data.nodes.forEach((node) => {
+				//Rename these two, so the naming is nicer
+				metrics[prefix + 'cells.' + node.ID + '.Volt'] = node['MinCellVolt'];
+				metrics[prefix + 'cells.' + node.ID + '.Temp'] = node['MinCellTemp'];
+				['BypassTemp', 'BypassAmp', 'Status'].forEach((x) => {
+					metrics[prefix + 'cells.' + node.ID + '.' + x] = node[x];
+				});
+			});
+			break;
+	}
+
+	if (debugGraphite) {
+		console.log(metrics);
+	}
+	if (metrics) {
+		graphiteClient.write(metrics);
+	}
+}
+
+
 function errorText(string) {
 	console.log('\x1b[31m%s\x1b[0m', string);
 }
@@ -139,6 +187,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 // Time to process incomming data
 debug = false;
 debugMQTT = false;
+debugGraphite = true;
 var tag;
 // Parse new messages incomming from Batrium 
 server.on('message',function(msg,info){
@@ -153,9 +202,11 @@ server.on('message',function(msg,info){
 			// check if the message id is present in the config. This dont care what version is there if file exist
 			if (config[messageID] && config[messageID].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
 			if (config[messageID] && config[messageID].influx || config.all.influx) sendInflux(obj, tag);
+			if (config[messageID] && config[messageID].graphite || config.all.graphite) sendGraphite(payload.SystemId,messageID,obj);
 		 	// Below is used if you use messageid and version in the configuration file	
 			if (config[payload.MessageId] && config[payload.MessageId].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
 			if (config[payload.MessageId] && config[payload.MessageId].influx || config.all.influx) sendInflux(obj, tag);
+			if (config[payload.MessageId] && config[payload.MessageId].graphite || config.all.graphite) sendGraphite(payload.SystemId,messageID,obj);
 		} catch (e) {
 			errorText('Couldnt get payload for ' + payload.MessageId + ' Size: %s',msg.length);
 			console.log(e);

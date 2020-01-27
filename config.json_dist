@@ -4,17 +4,21 @@
 		"mqttusername" : "mqtt",
 		"mqttpassword" : "mqtt",
 		"influxhost" : "localhost",
-		"influxdatabase" : "batrium"
+		"influxdatabase" : "batrium",
+		"graphiteurl": "plaintext://graphite.example.org:2003/",
+		"graphiteprefix": "solar.battery"
 	},
 	"3e" : {
 		"mqtt" : true,
 		"influx" : true,
+		"graphite" : true,
 		"tag" : "general",
 		"serie" : "generic"
 	},
 	"78" : {
 		"mqtt" : false,
 		"influx" : false, 
+		"graphite" : false,
 		"info" : "Dont use influx on message 7857",
 		"tag" : "general",
 		"serie" : "generic"
@@ -22,12 +26,14 @@
 	"57" : {
 		"mqtt" : false,
 		"influx" : false,
+		"graphite" : false,
 		"tag" : "general",
 		"serie" : "generic"
 	},
 	"42" : {
 		"mqtt" : false,
 		"influx" : false,
+		"graphite" : false,
 		"tag" : "general",
 		"serie" : "nodes",
 		"tagID" : "ID"
@@ -35,12 +41,14 @@
 	"54" : {
 		"mqtt" : false,
 		"influx" : true,
+		"graphite" : false,
 		"tag" : "general",
 		"serie" : "daily"
 	},
 	"41" : {
 		"mqtt" : true,
 		"influx" : false,
+		"graphite" : false,
 		"tag" : "general",
 		"serie" : "nodes2",
 		"info" : "Dont send this message to influx. its not supported. if you need the data stored in influx use MQTT and then parse it first"
@@ -50,6 +58,7 @@
 	"all" : {
 		"mqtt" : false,
 		"influx" :false,
+		"graphite" : false,
 		"info" : "Do not run every message to influx. you will kill the machine if running raspberry pi!"
 	}
 }
