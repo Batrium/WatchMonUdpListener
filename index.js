@@ -18,13 +18,29 @@ var fs = require('fs');
 
 //Loading configuration file. 
 try {
-	var config = JSON.parse(fs.readFileSync('config.json', "utf8"));
+	var config = JSON.parse(fs.readFileSync('config/config.json', "utf8"));
 }
 catch (e) {
-	errorText('Could not load configuration file. Will therefore not send any data out. file missing is config.json. Perhaps copy the dist file?'); 
+	errorText('Could not load configuration file. Will therefore not send any data out. file missing is config/config.json. Perhaps copy the dist file?'); 
+	errorText('Dont worry. I copied the file for you now :)'); 
+	fs.copyFile('config.json','config/config.json', (err) => {
+		if (err) {
+			console.log("No file copied");
+		}
+		});
 	console.error(e);
 	var config = {'all':{'mqtt':{},'influx':{}}, 'hej': {}};
+	process.exit(1);
 }
+
+fs.copyFile('config/config.json','config.json', (err) => {
+if (err) {
+	console.log("No file to copy");
+}
+});
+
+
+
 
 //MQTT server  generally localhost
 var mqtthost = (config.config.mqtthost) ? config.config.mqtthost : 'localhost';
@@ -42,19 +58,26 @@ options={
 
 var client  = mqtt.connect('mqtt://' + mqtthost, options)
 
+if (client) {
+	console.log('MQTT connected to: ' + mqtthost);
+} else {
+	 console.log('MQTT connection failed to: ' + mqtthost);
+ }
+
+
 const influx = new Influx.InfluxDB({
   host: influxhost,
   database: influxdatabase,
 })
 
-
+console.log('Influx host set to: ' + influxhost);
 // Function to get payload data
 // input data object
 // output payload data in json form
 const payloadParser = new Parser()
-	.string('first', { encoding: 'ascii', length: 1 })
+	.string('first', { encoding: 'utf8', length: 1 })
 	.int16le('MessageId', { formatter: (x) => {return x.toString(16);}})
-	.string('nd', { encoding: 'ascii', length: 1 })
+	.string('nd', { encoding: 'utf8', length: 1 })
 	.int16le('SystemId')
 	.int16le('hubId');
 function getPayload(data) {

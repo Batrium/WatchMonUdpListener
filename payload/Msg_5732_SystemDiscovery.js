@@ -9,7 +9,7 @@
 // Valid to    = SW 1.0.29
 const status = new Parser()
 	.skip(8)
-	.string('SystemCode', 	{ encoding: 'ascii', length: 8, stripNull: true })
+	.string('SystemCode', 	{ encoding: 'utf8', length: 8, stripNull: true })
 	.int16le('SystemFirmwareVersion')
 	.int16le('SystemHardwareVersion')
 	.int32le('SystemTime') // Epoch

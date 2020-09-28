@@ -11,9 +11,9 @@
 const status = new Parser()
 	.skip(8)
 	.int16le('HwSystemSetupVers')
-	.string('SystemCode', 	{ encoding: 'ascii', length: 8 })
-	.string('SysName', 		{ encoding: 'ascii', length: 20 })
-	.string('AssetCode', 	{ encoding: 'ascii', length: 20 })
+	.string('SystemCode', 	{ encoding: 'utf8', length: 8 })
+	.string('SysName', 		{ encoding: 'utf8', length: 20 })
+	.string('AssetCode', 	{ encoding: 'utf8', length: 20 })
 	.uint8('AllowTechAuth') 		// boolean 0 = Off , 1 = On
 	.uint8('AllowQuickSession') 	// boolean 0 = Off , 1 = On
 	.uint32le('QuickSessionInterval', { formatter: (x) => {return x/1000;}})  // seconds

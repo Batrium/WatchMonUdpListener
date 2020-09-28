@@ -1,0 +1,14 @@
+version: '3.6'
+services:
+
+  watchmon:
+    container_name: watchmon
+    image: daromer/watchmonudplistener
+    restart: unless-stopped
+    user: "0"
+    network_mode: "host"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./volumes/watchmon/config:/app/config
+

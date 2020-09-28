@@ -27,8 +27,8 @@ const status = new Parser()
 	.uint32le('ShuntManuCode')
 	.int16le('ShuntPartNum')
 	.int16le('ShuntVersCode')
-	.string('ShuntPns1', 				{ encoding: 'ascii', length: 8 })
-	.string('ShuntPns2', 				{ encoding: 'ascii', length: 8 })
+	.string('ShuntPns1', 				{ encoding: 'utf8', length: 8 })
+	.string('ShuntPns2', 				{ encoding: 'utf8', length: 8 })
 
 module.exports = function(msg)
 {
