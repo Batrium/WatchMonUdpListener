@@ -22,7 +22,7 @@ const status = new Parser()
     .bit5('reserved1')                  
     .bit1('AllowProgUpdateUsb')       // boolean index 63 - bit0
     .bit1('AllowProgUpdateWifi')      // boolean index 64 - bit1
-    .bit6('reserved2')
+    .bit6('reserved2')                // discard
     .int16le('SystemPresetId')        // index 64
     .int16le('SystemFirmwareVersion') // index 66
     .int16le('SystemHardwareVersion') // index 68
