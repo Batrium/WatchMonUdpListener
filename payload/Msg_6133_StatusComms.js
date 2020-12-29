@@ -27,7 +27,7 @@ const status = new Parser()
             Technician = 1,
             Factory = 2, */
     .int16le('SystemAuthToken')       // index 14
-    .int16le('SystemAuthRejectTicks') // index 16
+    .uint8('SystemAuthRejectTicks')   // index 16
     .uint8('WifiState') /* Choices WifiOpStates
             Broadcast Start = 0,
             Broadcast Prep = 1,
