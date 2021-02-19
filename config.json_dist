@@ -4,7 +4,9 @@
 		"mqttusername" : "mqtt",
 		"mqttpassword" : "mqtt",
 		"influxhost" : "localhost",
-		"influxdatabase" : "batrium"
+		"influxdatabase" : "batrium",
+		"debug" : "false",
+		"debugmqtt" : "false"
 	},
 	"3e" : {
 		"mqtt" : true,

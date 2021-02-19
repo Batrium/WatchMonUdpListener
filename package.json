@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-
   "keywords": [
     "solar",
     "inverter",
@@ -15,18 +14,18 @@
     "watchmon"
   ],
   "author": "Batrium",
-  "contributors": 
-    { "name" : "Daniel Römer"
-    , "email" : "daromer@gmail.com"
-    , "url" : "http://diytechandrepairs.nu/"
-    },
-  "bugs": 
-    { "url" : "https://github.com/Batrium/WatchMonUdpListener/issues"
-    },
+  "contributors": {
+    "name": "Daniel Römer",
+    "email": "daromer@gmail.com",
+    "url": "http://diytechandrepairs.nu/"
+  },
+  "bugs": {
+    "url": "https://github.com/Batrium/WatchMonUdpListener/issues"
+  },
   "license": "MIT",
   "dependencies": {
-    "mqtt": "latest",
     "binary-parser": "latest",
-    "influx": "latest"
+    "influx": "latest",
+    "mqtt": "latest"
   }
 }

@@ -40,6 +40,9 @@ if (err) {
 });
 
 
+var debug = (config.config.debug) ? config.config.debug : false;
+var debugMQTT = (config.config.debugmqtt) ? config.config.debugmqtt : false;;
+
 
 
 //MQTT server  generally localhost
@@ -160,8 +163,6 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 
 
 // Time to process incomming data
-debug = false;
-debugMQTT = false;
 var tag;
 // Parse new messages incomming from Batrium 
 server.on('message',function(msg,info){
