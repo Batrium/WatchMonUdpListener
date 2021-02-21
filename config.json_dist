@@ -5,10 +5,16 @@
 		"mqttpassword" : "mqtt",
 		"influxhost" : "localhost",
 		"influxdatabase" : "batrium",
-		"debug" : "false",
-		"debugmqtt" : "false"
+		"debug" : false,
+		"debugmqtt" : false
 	},
 	"3e" : {
+		"mqtt" : true,
+		"influx" : true,
+		"tag" : "general",
+		"serie" : "generic"
+	},
+	"32" : {
 		"mqtt" : true,
 		"influx" : true,
 		"tag" : "general",
@@ -29,7 +35,7 @@
 	},
 	"42" : {
 		"mqtt" : false,
-		"influx" : false,
+		"influx" : true,
 		"tag" : "general",
 		"serie" : "nodes",
 		"tagID" : "ID"
