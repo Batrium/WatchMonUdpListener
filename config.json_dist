@@ -5,6 +5,10 @@
 		"mqttpassword" : "mqtt",
 		"influxhost" : "localhost",
 		"influxdatabase" : "batrium",
+                "influxusername" : "",
+                "influxpassword" : "",
+		"influxenabled"  : true,
+		"mqttenabled"    : true,
 		"debug" : false,
 		"debugmqtt" : false
 	},

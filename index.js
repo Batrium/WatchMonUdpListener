@@ -36,11 +36,11 @@ catch (e) {
 	process.exit(1);
 }
 
-fs.copyFile('config/config.json','config.json', (err) => {
-if (err) {
-	console.log("No file to copy");
-}
-});
+//fs.copyFile('config/config.json','config.json', (err) => {
+//if (err) {
+//	console.log("No file to copy");
+//}
+//});
 
 
 var debug = (config.config.debug) ? config.config.debug : false;
@@ -50,10 +50,15 @@ var debugMQTT = (config.config.debugmqtt) ? config.config.debugmqtt : false;;
 
 //MQTT server  generally localhost
 var mqtthost = (config.config.mqtthost) ? config.config.mqtthost : 'localhost';
+var mqttenabled = (config.config.mqttenabled) ? config.config.mqttenabled : false;
 var mqttusername = (config.config.mqttusername) ? config.config.mqttusername : '';
 var mqttpassword = (config.config.mqttpassword) ? config.config.mqttpassword : '';
 var influxhost = (config.config.influxhost) ? config.config.influxhost :'localhost';
 var influxdatabase = (config.config.influxdatabase) ? config.config.influxdatabase :'localhost';
+var influxusername = (config.config.influxusername) ? config.config.influxusername : '';
+var influxpassword = (config.config.influxpassword) ? config.config.influxpassword : '';
+var influxenabled = (config.config.influxenabled) ? config.config.influxenabled : false;
+
 
 //Setup MQTT
 options={
@@ -64,19 +69,39 @@ options={
 
 var client  = mqtt.connect('mqtt://' + mqtthost, options)
 
-if (client) {
-	console.log('MQTT connected to: ' + mqtthost);
-} else {
-	 console.log('MQTT connection failed to: ' + mqtthost);
- }
+client.on("error",function(error){
+	console.log("Can't connect to MQTT server" + error);
+	console.log(mqttenabled);
+	if (mqttenabled) { process.exit(1); }
+});
+
+//console.log("connected flag  "+client.connected);
 
 
 const influx = new Influx.InfluxDB({
   host: influxhost,
   database: influxdatabase,
+  port: 8086,
+  username: influxusername,
+  password: influxpassword,
 })
 
 console.log('Influx host set to: ' + influxhost);
+
+influx.ping(5000).then(hosts => {
+  hosts.forEach(host => {
+    if (host.online) {
+      console.log(`${host.url.host} responded in ${host.rtt}ms running ${host.version})`)
+    } else {
+      console.log(`InfluxDB: ${host.url.host} is offline so quitting`)
+      if (influxenabled) process.exit(1);
+    }
+  })
+})
+
+
+
+
 // Function to get payload data
 // input data object
 // output payload data in json form
