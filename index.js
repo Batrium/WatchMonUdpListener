@@ -22,13 +22,16 @@ try {
 }
 catch (e) {
 	errorText('Could not load configuration file. Will therefore not send any data out. file missing is config/config.json. Perhaps copy the dist file?'); 
-	errorText('Dont worry. I copied the file for you now :)'); 
-	fs.copyFile('config.json','config/config.json', (err) => {
+	errorText('Dont worry. I copied the file for you now :) But you have to edit and restart'); 
+	if (!fs.existsSync('config')){
+    		fs.mkdirSync('config');
+	}	
+	fs.copyFile('config.json_dist','config/config.json', (err) => {
 		if (err) {
 			console.log("No file copied");
 		}
 		});
-	console.error(e);
+	//console.error(e);
 	var config = {'all':{'mqtt':{},'influx':{}}, 'hej': {}};
 	process.exit(1);
 }
