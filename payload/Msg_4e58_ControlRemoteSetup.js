@@ -6,8 +6,9 @@
 // Description = Control remote setup configuration
 // Version     = 1
 // Frequency   = 20 seconds
-// Support     = Current
-// Valid to    = SW 1.0.29
+// Support     = Legacy
+// Valid from  = SW 1.0.29
+// Valid to    = SW 2.17.7
 const status = new Parser()
 	.skip(8)
 	.int16le('ControlChargeTargetNormVolt')
