@@ -12,6 +12,7 @@ var server = udp.createSocket('udp4');
 var Parser = require('binary-parser').Parser;
 const Influx = require('influx');
 var fs = require('fs');
+const path = require('path');
 
 
 
@@ -67,13 +68,16 @@ options={
 	password:mqttpassword,
 	clean:true};
 
-var client  = mqtt.connect('mqtt://' + mqtthost, options)
+var client;
 
-client.on("error",function(error){
-	console.log("Can't connect to MQTT server" + error);
-	console.log(mqttenabled);
-	if (mqttenabled) { process.exit(1); }
-});
+if(mqttenabled) {
+	client  = mqtt.connect('mqtt://' + mqtthost, options)
+	client.on("error",function(error){
+		console.log("Can't connect to MQTT server" + error);
+		console.log(mqttenabled);
+		if (mqttenabled) { process.exit(1); }
+	});
+}
 
 //console.log("connected flag  "+client.connected);
 
@@ -93,8 +97,10 @@ influx.ping(5000).then(hosts => {
     if (host.online) {
       console.log(`${host.url.host} responded in ${host.rtt}ms running ${host.version})`)
     } else {
-      console.log(`InfluxDB: ${host.url.host} is offline so quitting`)
-      if (influxenabled) process.exit(1);
+      if (influxenabled) {
+		console.log(`InfluxDB: ${host.url.host} is offline so quitting`)  
+		process.exit(1);
+	  }
     }
   })
 })
@@ -121,9 +127,10 @@ function getPayload(data) {
 // Function to handle and send out data to MQTT service
 // It takes SystemId, MessageID and the data to send out. The data must be in Json format
 function sendMqtt(SystemId,MessageId,data) {
-
-	client.publish('Batrium/' + SystemId + '/' + MessageId , JSON.stringify(data));		
-	if (debugMQTT) console.log('Data sent to MQTT: Batrium/' + SystemId + '/' + MessageId);
+	if(mqttenabled) {
+		client.publish('Batrium/' + SystemId + '/' + MessageId , JSON.stringify(data));
+		if (debugMQTT) console.log('Data sent to MQTT: Batrium/' + SystemId + '/' + MessageId);
+	}
 }
 
 
@@ -135,18 +142,17 @@ function sendInflux(data, tag) {
 	tg = { systemId: data.SystemId, messageId: data.MessageId, messageType: (config[messageID] && config[messageID].tag  ) ? config[messageID].tag: 'generic' };
 	// IF its node based we need to add the node-tag to it as well
 	(config[messageID] && config[messageID].tagID  ) ? tg['nodeID'] =  data[config[messageID].tagID]  : '';
-
-	influx.writeMeasurement((config[messageID] && config[messageID].serie  ) ? config[messageID].serie : 'generic', [
-  	{
-	  tags: tg,
-	  fields: data,
-  	}
-	], {
-		precision: 's'
+	if(influxenabled) {
+		influx.writeMeasurement((config[messageID] && config[messageID].serie  ) ? config[messageID].serie : 'generic', [
+		{
+		tags: tg,
+		fields: data,
+		}
+		], {
+			precision: 's'
+		}
+		);
 	}
-
-	
-	);
 };
 
 function errorText(string) {
@@ -171,16 +177,18 @@ server.on('error',function(error){
 });
 
 
-var normalizedPath = require("path").join(__dirname, "payload");
+var normalizedPath = path.join(__dirname, "payload");
 console.log('Batrium logger started');
 
 // Function to load in all parsers from the payload folder. Those not able to load will be discarded during startup. 
 var messages = {};
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
 	try {
-		load = file.split("_")[1];
-		messages[load.toLowerCase()] = require("./payload/" + file);
-		infoText('Loaded file: ' + file);
+		if (path.extname(file) == ".js") {
+			load = file.split("_")[1];
+			messages[load.toLowerCase()] = require("./payload/" + file);
+			infoText('Loaded file: ' + file);
+		}
 
 	}
 	catch (e) {
@@ -210,7 +218,8 @@ server.on('message',function(msg,info){
 			if (config[payload.MessageId] && config[payload.MessageId].mqtt || config.all.mqtt) sendMqtt(payload.SystemId,payload.MessageId,obj);
 			if (config[payload.MessageId] && config[payload.MessageId].influx || config.all.influx) sendInflux(obj, tag);
 		} catch (e) {
-			errorText('Couldnt get payload for ' + payload.MessageId + ' Size: %s',msg.length);
+			console.log(require("util").inspect(msg));
+			errorText('Couldnt get payload for ' + payload.MessageId + ' Size: ' + msg.length);
 			console.log(e);
 			//process.exit(1);  //Lets end the program if we find errors processing the data. for error searching
 		}

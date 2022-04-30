@@ -63,7 +63,7 @@ const status = new Parser()
 			Simulator Start = 12,
 			Simulator Running = 13, */
 	.uint8('ShuntSOC',			{ formatter: (x) => {return x/2-5;}})    // percent
-	.int16le('ShuntVoltage',	{ formatter: (x) => {return x/100;}})
+	.uint16le('ShuntVoltage',	{ formatter: (x) => {return x/100;}})
 	.floatle('ShuntCurrent',	{ formatter: (x) => {return x/1000;}})
 	.uint8('ShuntStatus') /* Choices
 			Timeout = 0,
