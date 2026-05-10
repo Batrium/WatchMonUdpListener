@@ -45,7 +45,7 @@ const status = new Parser()
     .uint8('MaxCellTemp',       { formatter: (x) => {return x-40;}})     // index 19 - temperature ºC
     .uint8('AvgCellTemp',       { formatter: (x) => {return x-40;}})     // index 20 - temperature ºC
     .uint8('NumOfCellsInBypass')
-    .int16le('ShuntVoltage',    { formatter: (x) => {return x/100;}})
+    .uint16le('ShuntVoltage',    { formatter: (x) => {return x/100;}})
     .floatle('ShuntCurrent',    { formatter: (x) => {return x/1000;}})
     .floatle('ShuntPowerVA',    { formatter: (x) => {return x/1000;}}) // kW
     .int16le('ShuntSOC',        { formatter: (x) => {return x/100;}})  // percent hires 2 dec.pt

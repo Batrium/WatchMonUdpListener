@@ -37,7 +37,7 @@ const status = new Parser()
 	.uint8('CmuTxOpStatusId')
 	.uint8('CmuRxOpStatusId')
 	.uint8('CmuRxOpStatusUSN')
-	.int16le('ShuntVoltage',	{ formatter: (x) => {return x/100;}})  // voltage
+	.uint16le('ShuntVoltage',	{ formatter: (x) => {return x/100;}})  // voltage
 	.floatle('ShuntCurrent',	{ formatter: (x) => {return x/1000;}}) // amp
 	.floatle('ShuntPowerVA',	{ formatter: (x) => {return x/1000;}}) // kW
 
